@@ -20,18 +20,20 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     private String email;
+    private String phone;
     private String password;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public static User of(String name, String email, String password, Role role) {
+    public static User of(String name, String email, String phone, String password, Role role) {
         User user = new User();
         user.name = name;
         user.email = email;
+        user.phone = phone;
         user.password = password;
         user.role = role;
         return user;

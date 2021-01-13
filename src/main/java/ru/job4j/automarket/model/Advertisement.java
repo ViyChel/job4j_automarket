@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Class Advertisement.
@@ -22,6 +24,23 @@ public class Advertisement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
-    private LocalDateTime date;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     private boolean status;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Photo> photos = new ArrayList<>();
+
+
+    public static Advertisement of(String description) {
+        Advertisement advertisement = new Advertisement();
+        advertisement.description = description;
+        advertisement.setDate(new Date());
+        return advertisement;
+    }
+
+    public void addPhoto(Photo photo) {
+        this.photos.add(photo);
+    }
 }
