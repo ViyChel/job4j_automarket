@@ -20,13 +20,14 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String brand;
     private String model;
     private String engineType;
     private String enginePower;
-    private String fuel;
+    private String engineVolume;
     private String transmission;
     private String body;
     private String color;
     private String mileage;
+    private String year;
+    private String gear;
 }

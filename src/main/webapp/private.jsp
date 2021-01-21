@@ -17,7 +17,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-    <script src="./scripts/script.js" type="text/javascript"></script>
+    <script src="./scripts/private.js" type="text/javascript"></script>
     <title>Авторынок: купить, продать и обменять машину</title>
 </head>
 <body>
@@ -33,7 +33,7 @@
             </li>
             <% } else {%>
             <li class="nav-item">
-                <a class="nav-link" href='<c:url value="/private.jsp"/>'>Личный кабинет</a>
+                <a class="nav-link" href='<c:url value="/"/>'>Главная</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"

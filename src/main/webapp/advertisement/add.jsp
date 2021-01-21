@@ -4,15 +4,12 @@
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <%@page contentType="text/html; charset=UTF-8" %>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/png" href="../favicon.ico"/>
+    <link rel="shortcut icon" type="image/png" href="./favicon.ico"/>
     <!-- Bootstrap CSS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
             crossorigin="anonymous"></script>
@@ -24,20 +21,42 @@
 </head>
 <body>
 <div class="container">
-    <h2>Добавить объявление</h2>
-    <form class="form-horizontal" style="width:100%" action="<c:url value='/car.do'/>" method="post"
+    <div class="row justify-content-end">
+        <ul class="nav">
+            <% if (session.getAttribute("user") == null) {%>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/reg.do"/>'>Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/auth.do"/>'>Войти</a>
+            </li>
+            <% } else {%>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/"/>'>Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                   href='<c:url value="/auth.do"> <c:param name="exit" value="true"/> </c:url> '>
+                    <c:out value="${user.name}"/> | Выйти
+                </a>
+            </li>
+            <% }%>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <form class="form-horizontal" style="width:100%" action="<c:url value='/add.do'/>" method="post"
           enctype="multipart/form-data">
-        <%--    <fieldset >--%>
 
         <!-- Form Name -->
-        <%--        <legend class="text-center">Добавить объявление</legend>--%>
+        <legend class="text-center">Добавить объявление</legend>
 
         <!-- Text input-->
         <div class="form-group">
             <label class="col-md-4 control-label" for="model">Модель</label>
             <div class="col-md-4">
                 <input id="model" type="text" name="model" placeholder="Модель автомобиля"
-                       class="form-control input-md">
+                       class="form-control input-md" required>
             </div>
         </div>
 
@@ -46,7 +65,7 @@
             <label class="col-md-4 control-label" for="yearRelease">Год выпуска</label>
             <div class="col-md-4">
                 <input id="yearRelease" type="text" name="yearRelease" placeholder="Год выпуска"
-                       class="form-control input-md">
+                       class="form-control input-md" required>
             </div>
         </div>
 
@@ -54,7 +73,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="color">Цвет</label>
             <div class="col-md-4">
-                <input id="color" type="text" name="color" placeholder="Цвет автомобиля" class="form-control input-md">
+                <input id="color" type="text" name="color" placeholder="Цвет автомобиля" class="form-control input-md" required>
             </div>
         </div>
 
@@ -63,11 +82,11 @@
             <label class="col-md-4 control-label">Тип двигателя</label>
             <div class="col-md-4">
                 <label class="radio-inline" for="radios-0">
-                    <input type="radio" name="engine" id="radios-0" value="Бензиновый" checked="checked">
+                    <input type="radio" name="engineType" id="radios-0" value="Бензиновый" checked="checked">
                     Бензиновый
                 </label>
                 <label class="radio-inline" for="radios-1">
-                    <input type="radio" name="engine" id="radios-1" value="Дизельный">
+                    <input type="radio" name="engineType" id="radios-1" value="Дизельный">
                     Дизельный
                 </label>
             </div>
@@ -75,19 +94,19 @@
 
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-4 control-label">Мощность двигателя, л.с.</label>
+            <label class="col-md-4 control-label" for="enginePower">Мощность двигателя, л.с.</label>
             <div class="col-md-4">
-                <input name="powerengine" type="text" placeholder="Мощность двигателя"
-                       class="form-control input-md">
+                <input name="enginePower" id="enginePower" type="text" placeholder="Мощность двигателя"
+                       class="form-control input-md" required>
             </div>
         </div>
 
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-4 control-label" for="capacityEngine">Объем двигателя, л</label>
+            <label class="col-md-4 control-label" for="engineVolume">Объем двигателя, л</label>
             <div class="col-md-4">
-                <input id="capacityEngine" name="capacityEngine" type="text" placeholder="Объем двигателя"
-                       class="form-control input-md">
+                <input id="engineVolume" name="engineVolume" type="text" placeholder="Объем двигателя"
+                       class="form-control input-md" required>
             </div>
         </div>
 
@@ -95,7 +114,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="body">Тип кузова</label>
             <div class="col-md-4">
-                <select id="body" name="body" class="form-control">
+                <select id="body" name="body" class="form-control" required>
                     <option hidden value="1">Выберите тип кузова</option>
                     <option value="Седан">Седан</option>
                     <option value="Хэтчбек">Хэтчбек</option>
@@ -143,7 +162,7 @@
             <label class="col-md-4 control-label" for="mileage">Пробег, км</label>
             <div class="col-md-4">
                 <input id="mileage" type="text" name="mileage" placeholder="Пробег автомобиля"
-                       class="form-control input-md">
+                       class="form-control input-md" required>
             </div>
         </div>
 
@@ -151,7 +170,15 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="price">Цена (в руб.)</label>
             <div class="col-md-4">
-                <input id="price" type="text" name="price" placeholder="Цена автомобиля" class="form-control input-md">
+                <input id="price" type="text" name="price" placeholder="Цена автомобиля" class="form-control input-md" required>
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="price">Город</label>
+            <div class="col-md-4">
+                <input id="city" type="text" name="city" placeholder="Город" class="form-control input-md" required>
             </div>
         </div>
 
@@ -159,7 +186,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="desc">Дополнительно</label>
             <div class="col-md-4">
-                <textarea class="form-control" id="desc" name="desc"></textarea>
+                <textarea class="form-control" id="desc" name="desc" required></textarea>
             </div>
         </div>
 
@@ -167,7 +194,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="imgData">Добавить изображение</label>
             <div class="col-md-4">
-                <input id="imgData" name="file" class="input-file" type="file">
+                <input id="imgData" name="file" class="input-file" type="file" multiple required>
             </div>
         </div>
 
@@ -175,13 +202,10 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="singlebutton"></label>
             <div class="col-md-4">
-                <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-primary"
-                        onclick="return validate()">Добавить объявление
+                <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-primary" onclick="return validate()">Добавить объявление
                 </button>
             </div>
         </div>
-
-        <%--    </fieldset>--%>
     </form>
 </div>
 </body>
