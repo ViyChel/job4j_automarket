@@ -1,6 +1,5 @@
 package ru.job4j.automarket.persistence;
 
-import org.hibernate.Query;
 import ru.job4j.automarket.model.User;
 
 import java.util.List;
@@ -55,9 +54,8 @@ public class HbmUser implements Store<User> {
 
     public User findByEmail(String email) {
         return this.tx(session -> {
-            Query query = session.createQuery("from User where email = :email")
-                    .setParameter("email", email);
-            User user = (User) query.uniqueResult();
+            User user = session.createQuery("from User where email = :email", User.class)
+                    .setParameter("email", email).uniqueResult();
             return user != null ? user : new User();
         });
     }

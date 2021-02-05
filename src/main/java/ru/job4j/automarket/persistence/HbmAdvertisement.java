@@ -43,20 +43,21 @@ public class HbmAdvertisement implements Store<Advertisement> {
 
     @Override
     public List<Advertisement> findAll() {
-        return this.tx(session -> session.createQuery("select distinct ad from Advertisement ad join fetch ad.photos").list());
+        return this.tx(session -> session.createQuery("select distinct ad from Advertisement ad left join fetch ad"
+                + ".photos", Advertisement.class).list());
     }
 
     @Override
     public List<Advertisement> findByName(String name) {
-        return this.tx(session -> session.createQuery("from Advertisement where description = :description")
+        return this.tx(session -> session.createQuery("from Advertisement where description = :description", Advertisement.class)
                 .setParameter("description", name).list()
         );
     }
 
     @Override
     public Advertisement findById(int id) {
-        return (Advertisement) this.tx(session -> session.createQuery("from Advertisement ad join fetch ad.photos  "
-                + "where ad.id = :id")
+        return this.tx(session -> session.createQuery("from Advertisement ad left join fetch ad.photos  "
+                        + "where ad.id = :id", Advertisement.class)
                 .setParameter("id", id).uniqueResult()
         );
     }

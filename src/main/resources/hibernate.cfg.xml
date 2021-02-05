@@ -23,6 +23,7 @@
         <mapping class="ru.job4j.automarket.model.Car"/>
         <mapping class="ru.job4j.automarket.model.Advertisement"/>
         <mapping class="ru.job4j.automarket.model.Photo"/>
+        <mapping class="ru.job4j.automarket.model.Brand"/>
 
 
     </session-factory>

@@ -7,14 +7,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import ru.job4j.automarket.model.Advertisement;
-import ru.job4j.automarket.model.Car;
-import ru.job4j.automarket.model.Photo;
-import ru.job4j.automarket.model.User;
-import ru.job4j.automarket.persistence.HbmAdvertisement;
-import ru.job4j.automarket.persistence.HbmCar;
-import ru.job4j.automarket.persistence.HbmPhoto;
-import ru.job4j.automarket.persistence.Store;
+import ru.job4j.automarket.model.*;
+import ru.job4j.automarket.persistence.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -45,6 +39,7 @@ public class AdvertisementServlet extends HttpServlet {
     private static final Store<Advertisement> ADD_STORE = HbmAdvertisement.getStore();
     private static final Store<Car> CAR_STORE = HbmCar.getStore();
     private static final Store<Photo> PHOTO_STORE = HbmPhoto.getStore();
+    private static final Store<Brand> BRAND_STORE = HbmBrand.getStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,6 +57,7 @@ public class AdvertisementServlet extends HttpServlet {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("addId", ad.getId());
             jsonObject.addProperty("carId", ad.getCar().getId());
+            jsonObject.addProperty("brand", ad.getCar().getBrand().getName());
             jsonObject.addProperty("model", ad.getCar().getModel());
             jsonObject.addProperty("engineType", ad.getCar().getEngineType());
             jsonObject.addProperty("engineVolume", ad.getCar().getEngineVolume());
@@ -74,7 +70,11 @@ public class AdvertisementServlet extends HttpServlet {
             jsonObject.addProperty("date", ad.dateFormat(ad.getDate()));
             jsonObject.addProperty("status", ad.isStatus());
             List<Photo> list = ad.getPhotos();
-            jsonObject.addProperty("photo", list.get(0).getName());
+            if (list.size() != 0) {
+                jsonObject.addProperty("photo", list.get(0).getName());
+            } else {
+                jsonObject.addProperty("photo", "empty");
+            }
             jsonArray.add(jsonObject);
         });
     }
@@ -99,7 +99,9 @@ public class AdvertisementServlet extends HttpServlet {
             for (FileItem item : items) {
                 if (item.isFormField()) {
                     String field = item.getFieldName();
-                    if ("model".equals(field)) {
+                    if ("brand".equals(field)) {
+                        car.setBrand(BRAND_STORE.findByName(field).get(0));
+                    } else if ("model".equals(field)) {
                         car.setModel(item.getString("UTF-8"));
                     } else if ("yearRelease".equals(field)) {
                         car.setYear(item.getString("UTF-8"));

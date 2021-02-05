@@ -26,7 +26,7 @@
 
 <div class="container">
     <br>
-    <div class="card bg-light">
+    <div class="card bg-light mx-auto" style="max-width: 400px;">
         <article class="card-body mx-auto" style="max-width: 400px;">
             <h4 class="card-title mt-3 text-center">Войти</h4>
             <form action='<c:url value="/auth.do" />' method="post">
@@ -46,6 +46,7 @@
                     <button type="submit" class="btn btn-primary btn-block"> Войти  </button>
                 </div> <!-- form-group// -->
                 <p class="text-center">У вас нет аккаунта? <a href='<c:url value="/reg.do"/>'>Регистрация</a> </p>
+                <p class="text-center"/> <a href='<c:url value="/"/>'>На главную</a> </p>
             </form>
         </article>
     </div> <!-- card.// -->

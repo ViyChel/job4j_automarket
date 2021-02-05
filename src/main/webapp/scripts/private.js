@@ -10,24 +10,29 @@ function printTasks() {
         if (data !== null) {
             let textRow = $('#ads').after().html('');
             let text = '';
-            for (let i = 0; i < data.length; i++) {
-                let status = data[i].status;
-                let addId = data[i].addId;
-                let city = data[i].city;
-                let date = data[i].date;
-                let engineType = data[i].engineType;
-                let engineVolume = data[i].engineVolume;
-                let gear = data[i].gear;
-                let mileage = data[i].mileage;
-                let model = data[i].model;
-                let photo = data[i].photo;
-                let price = data[i].price;
-                let transmission = data[i].transmission;
-                let year = data[i].year;
+            for (let ad of data) {
+                let status = ad.status;
+                let addId = ad.addId;
+                let city = ad.city;
+                let date = ad.date;
+                let engineType = ad.engineType;
+                let engineVolume = ad.engineVolume;
+                let gear = ad.gear;
+                let mileage = ad.mileage;
+                let model = ad.model;
+                let photo = ad.photo;
+                let price = ad.price;
+                let transmission = ad.transmission;
+                let year = ad.year;
                 printRow();
 
                 function printRow() {
-                    text += '<tr><td><img src="download?name=' + photo + '" width="450px" height="300px" alt="photo"/></td>';
+                    if (photo === 'empty') {
+                        text += '<tr><td><img src="/automarket/default.png" width="450px" height="350px" alt="photo"/></td>';
+
+                    } else {
+                        text += '<tr><td><img src="download?name=' + photo + '" width="450px" height="350px" alt="photo"/></td>';
+                    }
                     console.log(text);
                     text += '<td><a class="h4" href="/automarket/detail.jsp?id=' + addId + '">' + model + ', ' + year + ' год</a>';
                     text += '<div>Двигатель : ' + engineType + ', ' + engineVolume + ' л</div>';

@@ -20,6 +20,9 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
     private String model;
     private String engineType;
     private String enginePower;

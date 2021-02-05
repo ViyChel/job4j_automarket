@@ -23,13 +23,13 @@
 
 <div class="container">
     <br>
-    <div class="card bg-light">
+    <div class="card bg-light mx-auto" style="max-width: 400px;">
         <article class="card-body mx-auto" style="max-width: 400px;">
             <h4 class="card-title mt-3 text-center">Регистрация</h4>
             <form action='<c:url value="/reg.do" />' method="post">
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-user" ></i> </span>
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
                     <input name="name" class="form-control" placeholder="Имя" type="text" required>
                 </div> <!-- form-group// -->
@@ -49,18 +49,14 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input name="password" id="password" class="form-control" placeholder="Введите пароль" type="password" required>
-                </div> <!-- form-group// -->
- <%--               <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                    </div>
-                    <input class="form-control" id="pass_repeat" placeholder="Повторите пароль" type="password" required onchange="checkPasswordMatch();">
-                </div> <!-- form-group// -->--%>
+                    <input name="password" id="password" class="form-control" placeholder="Введите пароль"
+                           type="password" required>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Создать</button>
                 </div> <!-- form-group// -->
                 <p class="text-center">У вас есть аккаунт? <a href='<c:url value="/auth.do"/>'> Войти</a></p>
+                <p class="text-center"/> <a href='<c:url value="/"/>'>На главную</a> </p>
             </form>
         </article>
     </div> <!-- card.// -->
