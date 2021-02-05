@@ -49,11 +49,28 @@
 <div class="container pt-3">
     <div class="row">
         <div class="card " style="width: 100%">
-            <div class="row justify-content-center mt-3 sticky-top">
+            <div class="card-body text-center mt-3">
                 <a href='<c:url value="/advertisement/add.jsp"/>' class="btn btn-outline-primary" role="button">Подать
                     объявление</a>
             </div>
             <div class="card-body">
+                <ul class="list-inline">
+                    <li class="list-inline-item mx-3">
+                        <label><input class="form-check-input" type="checkbox" id="lastDay" value=""
+                                      onclick="showLastDay()">показать за последний
+                            день</label>
+                    </li>
+                    <li class="list-inline-item mx-3">
+                        <label><input class="form-check-input" type="checkbox" id="checkPhoto" value=""
+                                      onclick="showPhoto()">показать с фото</label>
+                    </li>
+                    <li class="list-inline-item mx-3">
+                        <label>
+                            <select class="selectpicker" id="models" required></select>
+                            показать определенной марки</label>
+                        <%--                        <label><input class="form-check-input" type="checkbox" value="">показать определенной марки</label>--%>
+                    </li>
+                </ul>
                 <table class="table">
                     <tbody id="ads">
                     </tbody>

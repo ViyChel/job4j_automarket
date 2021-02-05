@@ -43,7 +43,7 @@ public class HbmAdvertisement implements Store<Advertisement> {
 
     @Override
     public List<Advertisement> findAll() {
-        return this.tx(session -> session.createQuery("select distinct ad from Advertisement ad join fetch ad.photos").list());
+        return this.tx(session -> session.createQuery("select distinct ad from Advertisement ad left join fetch ad.photos").list());
     }
 
     @Override

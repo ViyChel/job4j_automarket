@@ -74,7 +74,11 @@ public class AdvertisementServlet extends HttpServlet {
             jsonObject.addProperty("date", ad.dateFormat(ad.getDate()));
             jsonObject.addProperty("status", ad.isStatus());
             List<Photo> list = ad.getPhotos();
-            jsonObject.addProperty("photo", list.get(0).getName());
+            if (list.size() != 0) {
+                jsonObject.addProperty("photo", list.get(0).getName());
+            } else {
+                jsonObject.addProperty("photo", "empty");
+            }
             jsonArray.add(jsonObject);
         });
     }

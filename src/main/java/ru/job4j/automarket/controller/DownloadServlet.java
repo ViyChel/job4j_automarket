@@ -25,10 +25,15 @@ public class DownloadServlet extends HttpServlet {
         resp.setContentType("image/png; image/jpeg");
         String fileName = req.getParameter("name");
         resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        File file = new File("images" + File.separator
-                + "automarket" + File.separator
-                + "car_photo" + File.separator
-                + fileName);
+        File file;
+        if (!"empty".equals(fileName)) {
+            file = new File("images" + File.separator
+                    + "automarket" + File.separator
+                    + "car_photo" + File.separator
+                    + fileName);
+        } else {
+            file = new File(req.getContextPath() + "/default.png");
+        }
         try (FileInputStream in = new FileInputStream(file)) {
             resp.getOutputStream().write(in.readAllBytes());
         }

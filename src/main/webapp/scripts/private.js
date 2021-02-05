@@ -27,7 +27,12 @@ function printTasks() {
                 printRow();
 
                 function printRow() {
-                    text += '<tr><td><img src="download?name=' + photo + '" width="450px" height="300px" alt="photo"/></td>';
+                    if (photo === 'empty') {
+                        text += '<tr><td><img src="/automarket/default.png" width="450px" height="350px" alt="photo"/></td>';
+
+                    } else {
+                        text += '<tr><td><img src="download?name=' + photo + '" width="450px" height="350px" alt="photo"/></td>';
+                    }
                     console.log(text);
                     text += '<td><a class="h4" href="/automarket/detail.jsp?id=' + addId + '">' + model + ', ' + year + ' год</a>';
                     text += '<div>Двигатель : ' + engineType + ', ' + engineVolume + ' л</div>';
