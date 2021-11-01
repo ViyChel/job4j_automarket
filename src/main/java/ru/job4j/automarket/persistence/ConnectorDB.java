@@ -5,6 +5,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class ConnectorDB.
  *
@@ -21,9 +24,22 @@ public class ConnectorDB {
         return Holder.SESSION_FACTORY;
     }
 
+
     private static final class Holder {
+
+        private static Map<String, String> jdbcUrlSettings = new HashMap<>();
+        private static String jdbcDbUrl = System.getenv("JDBC_DATABASE_URL");
+
+       static  {
+           if (null != jdbcDbUrl) {
+               jdbcUrlSettings.put("hibernate.connection.url", System.getenv("JDBC_DATABASE_URL"));
+           }
+        }
+
         private final static StandardServiceRegistry REGISTRY = new StandardServiceRegistryBuilder()
-                .configure().build();
+                .configure("hibernate.cfg.xml")
+                .applySettings(jdbcUrlSettings)
+                .build();
         private final static SessionFactory SESSION_FACTORY = new MetadataSources(REGISTRY)
                 .buildMetadata().buildSessionFactory();
     }
