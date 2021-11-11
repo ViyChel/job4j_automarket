@@ -3,7 +3,7 @@
 function printTasks() {
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/automarket/private.do',
+        url: 'http://localhost:8080/private.do',
         dataType: 'JSON'
     }).done(function (data) {
         console.log(data);
@@ -28,7 +28,7 @@ function printTasks() {
 
                 function printRow() {
                     if (photo === 'empty') {
-                        text += '<tr><td><img src="/automarket/default.png" width="450px" height="350px" alt="photo"/></td>';
+                        text += '<tr><td><img src="./default.png" width="450px" height="350px" alt="photo"/></td>';
 
                     } else {
                         text += '<tr><td><img src="download?name=' + photo + '" width="450px" height="350px" alt="photo"/></td>';

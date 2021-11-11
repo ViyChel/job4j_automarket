@@ -5,7 +5,8 @@ let selectData;
 function getSelectData() {
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/automarket/brand.do',
+        // url: 'http://localhost:8080/brand.do',
+        url: 'brand.do',
         dataType: 'JSON'
     }).done(function (data) {
         selectPrint(data)
@@ -18,7 +19,7 @@ function getSelectData() {
 function printTasks() {
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/automarket/add.do',
+        url: 'add.do',
         dataType: 'JSON'
     }).done(function (data) {
         const latsDay = checkLastDay();
@@ -27,7 +28,6 @@ function printTasks() {
             getSelectData();
         }
         let brandSelectIndex = document.getElementById('brands').selectedIndex;
-        console.log(brandSelectIndex)
         if (brandSelectIndex === -1 || brandSelectIndex === 0) {
             printAds(data, latsDay, printPhoto, '');
         } else {
@@ -86,13 +86,13 @@ function printAds(data, dayOption, photoOption, brandOption) {
 
             function print() {
                 if (photo === 'empty') {
-                    text += '<tr class="border-top"><td style="width:  450px"><a href="/automarket/detail.jsp?id=' + addId + '"><img src="./default.png" class="border" width="450" height="350px" alt="photo"/></td>';
+                    text += '<tr class="border-top"><td style="width:  450px"><a href="./detail.jsp?id=' + addId + '"><img src="./default.png" class="border" width="450" height="350px" alt="photo"/></td>';
 
                 } else {
-                    text += '<tr class="border-top"><td style="width:  450px"><a href="/automarket/detail.jsp?id=' + addId + '"><img src="download?name=' + photo + '" class="border" width="450" height="350px" alt="photo"/></td>';
+                    text += '<tr class="border-top"><td style="width:  450px"><a href="./detail.jsp?id=' + addId + '"><img src="./image/' + photo + '" class="border" width="450" height="350px" alt="photo"/></td>';
                 }
                 text += '<td class="ml-1">'
-                text += '<div class="h4 p-1"><a class="text-decoration-none" href="/automarket/detail.jsp?id=' + addId + '">' + brand + ' ' + model + ', ' + year + ' год</a></div>'
+                text += '<div class="h4 p-1"><a class="text-decoration-none" href="./detail.jsp?id=' + addId + '">' + brand + ' ' + model + ', ' + year + ' год</a></div>'
 
                 text += '<table class="table">'
                 text += '<tr>'

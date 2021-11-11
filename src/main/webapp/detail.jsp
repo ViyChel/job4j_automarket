@@ -80,15 +80,15 @@
                                     if (photoId == 0) {%>
                             <a
                                     data-fancybox="gallery"
-                                    data-src="download?name=<%=photo.getName()%>"
+                                    data-src="./image/<%=photo.getName()%>"
                             >
-                                <img src="download?name=<%=photo.getName()%>" class="border" width="600px"
+                                <img src="./image/<%=photo.getName()%>" class="border" width="600px"
                                      height="400px" alt="photo"/>
                             </a>
                             <% photoId++;
                             } else {%>
-                            <a data-fancybox="gallery" data-src="download?name=<%=photo.getName()%>">
-                                <img src="download?name=<%=photo.getName()%>" class="border" width="197px"
+                            <a data-fancybox="gallery" data-src="./image/<%=photo.getName()%>">
+                                <img src="./image/<%=photo.getName()%>" class="border" width="197px"
                                      height="150px" alt="photo"/>
                             </a>
                             <%
@@ -96,14 +96,6 @@
                                     }
                                 }
                             %>
-                            <%--   <c:forEach var="photo" items="${add.getPhotos()}">
-                                   <p>${photo.getName()}</p>
-                                   <p>GGGGGGGGGGGG</p>
-                               </c:forEach>--%>
-                            <%--<img src="download?name=<%=add.getPhotos().get(0).getName()%>" class="border" width="600px"
-                                 height="400px"
-                                 alt="photo"/>
-                            <%}%>--%>
                             <% if (add.isStatus()) {%>
                             <div class="font-weight-bold text-danger mt-3">ПРОДАНО</div>
                             <% } else {%>
