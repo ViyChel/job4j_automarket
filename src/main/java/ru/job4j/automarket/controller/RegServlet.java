@@ -53,7 +53,7 @@ public class RegServlet extends HttpServlet {
                 user = User.of(name, email, phone, password, role);
                 USER_STORE.add(user);
                 sc.setAttribute("user", user);
-                resp.sendRedirect(req.getContextPath());
+                resp.sendRedirect(req.getContextPath() + "/");
             }
         } else {
             req.setAttribute("error", "Заполните все поля!");

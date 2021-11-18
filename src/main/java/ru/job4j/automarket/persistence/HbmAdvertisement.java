@@ -1,6 +1,7 @@
 package ru.job4j.automarket.persistence;
 
 import ru.job4j.automarket.model.Advertisement;
+import ru.job4j.automarket.model.User;
 
 import java.util.List;
 
@@ -49,7 +50,8 @@ public class HbmAdvertisement implements Store<Advertisement> {
 
     @Override
     public List<Advertisement> findByName(String name) {
-        return this.tx(session -> session.createQuery("from Advertisement where description = :description", Advertisement.class)
+        return this.tx(session -> session.createQuery("from Advertisement where description = :description",
+                        Advertisement.class)
                 .setParameter("description", name).list()
         );
     }
@@ -62,4 +64,12 @@ public class HbmAdvertisement implements Store<Advertisement> {
         );
     }
 
+    public List<Advertisement> findByUser(User user) {
+        return this.tx(session -> session.createQuery("select distinct ad from Advertisement ad "
+                        + "left join fetch ad.photos "
+                        + "join fetch ad.user "
+                        + "where ad.user = :user", Advertisement.class)
+                .setParameter("user", user).list()
+        );
+    }
 }

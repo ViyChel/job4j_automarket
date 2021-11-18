@@ -16,8 +16,6 @@ import javax.persistence.*;
  */
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "photos")
 public class Photo {
     @Id

@@ -48,7 +48,7 @@ public class AuthServlet extends HttpServlet {
             User user = ((HbmUser) USER_STORE).findByEmail(email);
             if (user.getId() != null && user.getPassword().equals(password)) {
                 sc.setAttribute("user", user);
-                resp.sendRedirect(req.getContextPath());
+                resp.sendRedirect(req.getContextPath() + "/");
             } else {
                 authFail(req, resp);
             }

@@ -5,7 +5,6 @@ let selectData;
 function getSelectData() {
     $.ajax({
         type: 'GET',
-        // url: 'http://localhost:8080/brand.do',
         url: 'brand.do',
         dataType: 'JSON'
     }).done(function (data) {

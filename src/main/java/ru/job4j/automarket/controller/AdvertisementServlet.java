@@ -16,10 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
@@ -40,16 +37,25 @@ public class AdvertisementServlet extends HttpServlet {
     private static final Store<Car> CAR_STORE = HbmCar.getStore();
     private static final Store<Photo> PHOTO_STORE = HbmPhoto.getStore();
     private static final Store<Brand> BRAND_STORE = HbmBrand.getStore();
+    private static final String CHARSET = "UTF-8";
+
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        setCharset(req);
         resp.setContentType("application/json; charset=UTF-8");
-        List<Advertisement> advertisements = ADD_STORE.findAll();
-        JsonArray jsonArray = new JsonArray();
-        PrintWriter writer = new PrintWriter(resp.getOutputStream(), true, StandardCharsets.UTF_8);
-        fillJsonArray(jsonArray, advertisements);
-        writer.println(jsonArray);
+        String id = req.getParameter("id");
+        if (id != null) {
+            Advertisement ad = ADD_STORE.findById(Integer.parseInt(id));
+            req.setAttribute("ad", ad);
+            req.getRequestDispatcher("/advertisement/add.jsp").forward(req, resp);
+        } else {
+            List<Advertisement> advertisements = ADD_STORE.findAll();
+            JsonArray jsonArray = new JsonArray();
+            PrintWriter writer = new PrintWriter(resp.getOutputStream(), true, StandardCharsets.UTF_8);
+            fillJsonArray(jsonArray, advertisements);
+            writer.println(jsonArray);
+        }
     }
 
     private void fillJsonArray(JsonArray jsonArray, List<Advertisement> ads) {
@@ -70,7 +76,7 @@ public class AdvertisementServlet extends HttpServlet {
             jsonObject.addProperty("date", ad.dateFormat(ad.getDate()));
             jsonObject.addProperty("status", ad.isStatus());
             List<Photo> list = ad.getPhotos();
-            if (list.size() != 0) {
+            if (!list.isEmpty()) {
                 jsonObject.addProperty("photo", list.get(0).getName());
             } else {
                 jsonObject.addProperty("photo", "empty");
@@ -80,8 +86,8 @@ public class AdvertisementServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        setCharset(req);
         resp.setContentType("text/html; charset=UTF-8");
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletContext servletContext = this.getServletConfig().getServletContext();
@@ -92,56 +98,56 @@ public class AdvertisementServlet extends HttpServlet {
         final Car car = new Car();
         try {
             List<FileItem> items = upload.parseRequest(req);
-            File folder = new File("images" + File.separator + "automarket" + File.separator + "car_photo");
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
             for (FileItem item : items) {
                 if (item.isFormField()) {
                     String field = item.getFieldName();
                     if ("brand".equals(field)) {
-                        car.setBrand(BRAND_STORE.findByName(field).get(0));
+                        Brand brand = BRAND_STORE.findByName(item.getString(CHARSET)).get(0);
+                        car.setBrand(brand);
                     } else if ("model".equals(field)) {
-                        car.setModel(item.getString("UTF-8"));
+                        car.setModel(item.getString(CHARSET));
                     } else if ("yearRelease".equals(field)) {
-                        car.setYear(item.getString("UTF-8"));
+                        car.setYear(item.getString(CHARSET));
                     } else if ("color".equals(field)) {
-                        car.setColor(item.getString("UTF-8"));
+                        car.setColor(item.getString(CHARSET));
                     } else if ("engineType".equals(field)) {
-                        car.setEngineType(item.getString("UTF-8"));
+                        car.setEngineType(item.getString(CHARSET));
                     } else if ("enginePower".equals(field)) {
-                        car.setEnginePower(item.getString("UTF-8"));
+                        car.setEnginePower(item.getString(CHARSET));
                     } else if ("engineVolume".equals(field)) {
-                        car.setEngineVolume(item.getString("UTF-8"));
+                        car.setEngineVolume(item.getString(CHARSET));
                     } else if ("body".equals(field)) {
-                        car.setBody(item.getString("UTF-8"));
+                        car.setBody(item.getString(CHARSET));
                     } else if ("transmission".equals(field)) {
-                        car.setTransmission(item.getString("UTF-8"));
+                        car.setTransmission(item.getString(CHARSET));
                     } else if ("gear".equals(field)) {
-                        car.setGear(item.getString("UTF-8"));
+                        car.setGear(item.getString(CHARSET));
                     } else if ("mileage".equals(field)) {
-                        car.setMileage(item.getString("UTF-8"));
+                        car.setMileage(item.getString(CHARSET));
                     } else if ("price".equals(field)) {
-                        advertisement.setPrice(item.getString("UTF-8"));
+                        advertisement.setPrice(item.getString(CHARSET));
                     } else if ("city".equals(field)) {
-                        advertisement.setCity(item.getString("UTF-8"));
+                        advertisement.setCity(item.getString(CHARSET));
                     } else if ("desc".equals(field)) {
-                        advertisement.setDescription(item.getString("UTF-8"));
+                        advertisement.setDescription(item.getString(CHARSET));
                     }
                 } else {
                     if (!item.getName().isEmpty()) {
-                        String name = UUID.randomUUID() + item.getName();
-                        String path = folder + File.separator + name;
-                        File file = new File(path);
+                        File folder = new File(getServletContext().getRealPath(".") + File.separator + "image");
+                        if (!folder.exists()) {
+                            folder.mkdirs();
+                        }
+                        String fileName = UUID.randomUUID() + item.getName();
+                        File file = new File(folder + File.separator + fileName);
                         try (FileOutputStream out = new FileOutputStream(file)) {
                             out.write(item.getInputStream().readAllBytes());
                         }
-                        Photo photo = PHOTO_STORE.add(Photo.of(name));
+                        Photo photo = PHOTO_STORE.add(Photo.of(fileName));
                         advertisement.addPhoto(photo);
                     }
                 }
             }
-        } catch (FileUploadException e) {
+        } catch (FileUploadException | UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }
         if (req.getParameter("id") != null) {
@@ -151,6 +157,20 @@ public class AdvertisementServlet extends HttpServlet {
         advertisement.setCar(car);
         advertisement.setUser((User) req.getSession().getAttribute("user"));
         ADD_STORE.add(advertisement);
-        resp.sendRedirect(req.getContextPath());
+        try {
+            resp.sendRedirect(req.getContextPath() + "/");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
+
+    private void setCharset(HttpServletRequest req) {
+        try {
+            req.setCharacterEncoding(CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

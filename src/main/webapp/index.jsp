@@ -43,7 +43,7 @@
     <div class="row">
         <div class="card " style="width: 100%">
             <div class="card-body text-center mt-3">
-                <a href='<c:url value="/advertisement/add.jsp"/>' class="btn btn-outline-primary" role="button">Подать
+                <a href='<c:url value="/add.do"/>' class="btn btn-outline-primary" role="button">Подать
                     объявление</a>
             </div>
             <div class="card-body">

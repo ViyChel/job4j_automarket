@@ -1,7 +1,7 @@
 package ru.job4j.automarket.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,14 +20,13 @@ import java.util.List;
  */
 @Entity
 @Data
-//@NoArgsConstructor
 @Table(name = "advertisements")
 public class Advertisement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Lob
+    @Lob @Type(type = "org.hibernate.type.TextType")
     private String description;
     private String price;
     private String city;

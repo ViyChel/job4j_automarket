@@ -14,7 +14,6 @@ import javax.persistence.*;
  */
 @Entity
 @Data
-@NoArgsConstructor
 @Table(name = "cars")
 public class Car {
     @Id
