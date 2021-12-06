@@ -34,9 +34,9 @@ import java.util.UUID;
 @WebServlet("/add.do")
 public class AdvertisementServlet extends HttpServlet {
     private static final Store<Advertisement> ADD_STORE = HbmAdvertisement.getStore();
-    private static final Store<Car> CAR_STORE = HbmCar.getStore();
     private static final Store<Photo> PHOTO_STORE = HbmPhoto.getStore();
     private static final Store<Brand> BRAND_STORE = HbmBrand.getStore();
+    private static final Store<Body> BODY_STORE = HbmBody.getStore();
     private static final String CHARSET = "UTF-8";
 
 
@@ -47,7 +47,11 @@ public class AdvertisementServlet extends HttpServlet {
         String id = req.getParameter("id");
         if (id != null) {
             Advertisement ad = ADD_STORE.findById(Integer.parseInt(id));
+            List<Brand> brands = BRAND_STORE.findAll();
+            List<Body> bodies = BODY_STORE.findAll();
             req.setAttribute("ad", ad);
+            req.setAttribute("brands", brands);
+            req.setAttribute("bodies", bodies);
             req.getRequestDispatcher("/advertisement/add.jsp").forward(req, resp);
         } else {
             List<Advertisement> advertisements = ADD_STORE.findAll();
@@ -65,8 +69,9 @@ public class AdvertisementServlet extends HttpServlet {
             jsonObject.addProperty("carId", ad.getCar().getId());
             jsonObject.addProperty("brand", ad.getCar().getBrand().getName());
             jsonObject.addProperty("model", ad.getCar().getModel());
-            jsonObject.addProperty("engineType", ad.getCar().getEngineType());
-            jsonObject.addProperty("engineVolume", ad.getCar().getEngineVolume());
+            jsonObject.addProperty("engineType", ad.getCar().getEngine().getEngineType());
+            jsonObject.addProperty("enginePower", ad.getCar().getEngine().getEnginePower());
+            jsonObject.addProperty("engineVolume", ad.getCar().getEngine().getEngineVolume());
             jsonObject.addProperty("mileage", ad.getCar().getMileage());
             jsonObject.addProperty("gear", ad.getCar().getGear());
             jsonObject.addProperty("transmission", ad.getCar().getTransmission());
@@ -94,36 +99,49 @@ public class AdvertisementServlet extends HttpServlet {
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
         factory.setRepository(repository);
         ServletFileUpload upload = new ServletFileUpload(factory);
-        final Advertisement advertisement = Advertisement.of();
-        final Car car = new Car();
+        Advertisement advertisement = Advertisement.of();
         try {
             List<FileItem> items = upload.parseRequest(req);
+            for (FileItem itemID : items) {
+                String field = itemID.getFieldName();
+                if (itemID.isFormField()) {
+                    if ("id".equals(field)) {
+                        if (!itemID.getString(CHARSET).isEmpty()) {
+                            advertisement = ADD_STORE.findById(Integer.parseInt(itemID.getString(CHARSET)));
+                        } else {
+                            advertisement.setCar(Car.of());
+                        }
+                        break;
+                    }
+                }
+            }
             for (FileItem item : items) {
                 if (item.isFormField()) {
                     String field = item.getFieldName();
                     if ("brand".equals(field)) {
                         Brand brand = BRAND_STORE.findByName(item.getString(CHARSET)).get(0);
-                        car.setBrand(brand);
+                        advertisement.getCar().setBrand(brand);
                     } else if ("model".equals(field)) {
-                        car.setModel(item.getString(CHARSET));
+                        advertisement.getCar().setModel(item.getString(CHARSET));
                     } else if ("yearRelease".equals(field)) {
-                        car.setYear(item.getString(CHARSET));
+                        advertisement.getCar().setYear(item.getString(CHARSET));
                     } else if ("color".equals(field)) {
-                        car.setColor(item.getString(CHARSET));
+                        advertisement.getCar().setColor(item.getString(CHARSET));
                     } else if ("engineType".equals(field)) {
-                        car.setEngineType(item.getString(CHARSET));
+                        advertisement.getCar().getEngine().setEngineType(item.getString(CHARSET));
                     } else if ("enginePower".equals(field)) {
-                        car.setEnginePower(item.getString(CHARSET));
+                        advertisement.getCar().getEngine().setEnginePower(item.getString(CHARSET));
                     } else if ("engineVolume".equals(field)) {
-                        car.setEngineVolume(item.getString(CHARSET));
+                        advertisement.getCar().getEngine().setEngineVolume(item.getString(CHARSET));
                     } else if ("body".equals(field)) {
-                        car.setBody(item.getString(CHARSET));
+                        Body body = BODY_STORE.findByName(item.getString(CHARSET)).get(0);
+                        advertisement.getCar().setBody(body);
                     } else if ("transmission".equals(field)) {
-                        car.setTransmission(item.getString(CHARSET));
+                        advertisement.getCar().setTransmission(item.getString(CHARSET));
                     } else if ("gear".equals(field)) {
-                        car.setGear(item.getString(CHARSET));
+                        advertisement.getCar().setGear(item.getString(CHARSET));
                     } else if ("mileage".equals(field)) {
-                        car.setMileage(item.getString(CHARSET));
+                        advertisement.getCar().setMileage(item.getString(CHARSET));
                     } else if ("price".equals(field)) {
                         advertisement.setPrice(item.getString(CHARSET));
                     } else if ("city".equals(field)) {
@@ -150,15 +168,14 @@ public class AdvertisementServlet extends HttpServlet {
         } catch (FileUploadException | UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }
-        if (req.getParameter("id") != null) {
-            advertisement.setId(Integer.parseInt(req.getParameter("id")));
+        if (advertisement.getId() != 0) {
+            ADD_STORE.replace(advertisement.getId(), advertisement);
+        } else {
+            advertisement.setUser((User) req.getSession().getAttribute("user"));
+            ADD_STORE.add(advertisement);
         }
-        CAR_STORE.add(car);
-        advertisement.setCar(car);
-        advertisement.setUser((User) req.getSession().getAttribute("user"));
-        ADD_STORE.add(advertisement);
         try {
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/private.jsp");
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
@@ -171,6 +188,4 @@ public class AdvertisementServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-
 }

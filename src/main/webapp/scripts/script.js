@@ -49,6 +49,7 @@ function printAds(data, dayOption, photoOption, brandOption) {
             let city = ad.city;
             let date = ad.date;
             let engineType = ad.engineType;
+            let enginePower = ad.enginePower;
             let engineVolume = ad.engineVolume;
             let gear = ad.gear;
             let mileage = ad.mileage;

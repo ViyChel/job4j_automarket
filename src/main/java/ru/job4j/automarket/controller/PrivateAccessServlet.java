@@ -54,8 +54,8 @@ public class PrivateAccessServlet extends HttpServlet {
             jsonObject.addProperty("carId", ad.getCar().getId());
             jsonObject.addProperty("brand", ad.getCar().getBrand().getName());
             jsonObject.addProperty("model", ad.getCar().getModel());
-            jsonObject.addProperty("engineType", ad.getCar().getEngineType());
-            jsonObject.addProperty("engineVolume", ad.getCar().getEngineVolume());
+            jsonObject.addProperty("engineType", ad.getCar().getEngine().getEngineType());
+            jsonObject.addProperty("engineVolume", ad.getCar().getEngine().getEngineVolume());
             jsonObject.addProperty("mileage", ad.getCar().getMileage());
             jsonObject.addProperty("gear", ad.getCar().getGear());
             jsonObject.addProperty("transmission", ad.getCar().getTransmission());

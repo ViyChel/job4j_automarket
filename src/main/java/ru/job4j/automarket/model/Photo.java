@@ -1,9 +1,7 @@
 package ru.job4j.automarket.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -14,13 +12,16 @@ import javax.persistence.*;
  * @version 1.0
  * @since 14.01.2021
  */
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "photos")
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "name")
     private String name;
 
     public static Photo of(String name) {

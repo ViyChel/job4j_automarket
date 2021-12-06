@@ -30,17 +30,17 @@ public class ConnectorDB {
         private static Map<String, String> jdbcUrlSettings = new HashMap<>();
         private static String jdbcDbUrl = System.getenv("JDBC_DATABASE_URL");
 
-       static  {
-           if (null != jdbcDbUrl) {
-               jdbcUrlSettings.put("hibernate.connection.url", System.getenv("JDBC_DATABASE_URL"));
-           }
+        static {
+            if (null != jdbcDbUrl) {
+                jdbcUrlSettings.put("hibernate.connection.url", System.getenv("JDBC_DATABASE_URL"));
+            }
         }
 
-        private final static StandardServiceRegistry REGISTRY = new StandardServiceRegistryBuilder()
+        private static final StandardServiceRegistry REGISTRY = new StandardServiceRegistryBuilder()
                 .configure("hibernate.cfg.xml")
                 .applySettings(jdbcUrlSettings)
                 .build();
-        private final static SessionFactory SESSION_FACTORY = new MetadataSources(REGISTRY)
+        private static final SessionFactory SESSION_FACTORY = new MetadataSources(REGISTRY)
                 .buildMetadata().buildSessionFactory();
     }
 }

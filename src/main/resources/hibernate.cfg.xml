@@ -20,10 +20,14 @@
 
         <mapping class="ru.job4j.automarket.model.Role"/>
         <mapping class="ru.job4j.automarket.model.User"/>
+        <mapping class="ru.job4j.automarket.model.Body"/>
+        <mapping class="ru.job4j.automarket.model.Brand"/>
+        <mapping class="ru.job4j.automarket.model.Engine"/>
         <mapping class="ru.job4j.automarket.model.Car"/>
-        <mapping class="ru.job4j.automarket.model.Advertisement"/>
+        <mapping class="ru.job4j.automarket.model.Photo"/>
         <mapping class="ru.job4j.automarket.model.Photo"/>
         <mapping class="ru.job4j.automarket.model.Brand"/>
+        <mapping class="ru.job4j.automarket.model.Advertisement"/>
 
 
     </session-factory>

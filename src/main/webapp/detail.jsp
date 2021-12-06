@@ -61,7 +61,7 @@
             <div class="card-body">
                 <table class="table">
                     <tr>
-                        <div class="h2 text-success">
+                        <div class="h2 text-primary">
                             Продажа <%=add.getCar().getBrand().getName()%> <%=add.getCar().getModel()%>,
                             <%=add.getCar().getYear()%> г.,
                             г. <%=add.getCity()%>
@@ -121,10 +121,15 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="text-secondary p-1">Цвет</td>
+                                    <td class="p-1"><%=add.getCar().getColor()%>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="text-secondary p-1">Двигатель</td>
-                                    <td class="p-1"><%=add.getCar().getEngineType()%>
-                                        , <%=add.getCar().getEngineVolume()%>
-                                        л., <%=add.getCar().getEnginePower()%> л.с.
+                                    <td class="p-1"><%=add.getCar().getEngine().getEngineType()%>
+                                        , <%=add.getCar().getEngine().getEngineVolume()%>
+                                        л., <%=add.getCar().getEngine().getEnginePower()%> л.с.
                                     </td>
                                 </tr>
                                 <tr>

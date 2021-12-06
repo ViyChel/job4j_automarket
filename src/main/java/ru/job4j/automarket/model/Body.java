@@ -6,27 +6,25 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * Class Role.
+ * Class Body.
  *
  * @author Vitaly Yagufarov (for.viy@gmail.com)
  * @version 1.0
- * @since 13.01.2021
+ * @since 25.01.2022
  */
 @Getter
 @Setter
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "body")
+public class Body {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column(name = "name")
     private String name;
 
-    public static Role of(String name) {
-        Role role = new Role();
-        role.name = name;
-        return role;
+    public static Body of() {
+        return new Body();
     }
 }

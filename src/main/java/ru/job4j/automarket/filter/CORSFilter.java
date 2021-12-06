@@ -15,9 +15,6 @@ import java.io.IOException;
  */
 @WebFilter("*.do")
 public class CORSFilter implements Filter {
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException,
@@ -34,11 +31,6 @@ public class CORSFilter implements Filter {
             resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             return;
         }
-
         chain.doFilter(request, servletResponse);
-    }
-
-    @Override
-    public void destroy() {
     }
 }

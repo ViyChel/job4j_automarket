@@ -1,8 +1,7 @@
 package ru.job4j.automarket.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -13,17 +12,27 @@ import javax.persistence.*;
  * @version 1.0
  * @since 13.01.2021
  */
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "password")
     private String password;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

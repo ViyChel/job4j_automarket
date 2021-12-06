@@ -31,7 +31,7 @@ public class AuthServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         if ("true".equals(req.getParameter("exit"))) {
             req.getSession().setAttribute("user", null);
-            resp.sendRedirect(req.getContextPath());
+            resp.sendRedirect(req.getContextPath() + "/");
         } else {
             req.getRequestDispatcher("/auth/login.jsp").forward(req, resp);
         }
